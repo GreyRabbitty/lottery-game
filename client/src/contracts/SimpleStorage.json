@@ -743,7 +743,7 @@
   "sourceMap": "57:203:2:-:0;;;;;;;;;;;;;;;;;;;",
   "deployedSourceMap": "57:203:2:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;111:62;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;179:79;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;111:62;165:1;152:10;:14;;;;111:62;:::o;179:79::-;215:7;241:10;;234:17;;179:79;:::o;88:117:3:-;197:1;194;187:12;334:77;371:7;400:5;389:16;;334:77;;;:::o;417:122::-;490:24;508:5;490:24;:::i;:::-;483:5;480:35;470:63;;529:1;526;519:12;470:63;417:122;:::o;545:139::-;591:5;629:6;616:20;607:29;;645:33;672:5;645:33;:::i;:::-;545:139;;;;:::o;690:329::-;749:6;798:2;786:9;777:7;773:23;769:32;766:119;;;804:79;;:::i;:::-;766:119;924:1;949:53;994:7;985:6;974:9;970:22;949:53;:::i;:::-;939:63;;895:117;690:329;;;;:::o;1025:118::-;1112:24;1130:5;1112:24;:::i;:::-;1107:3;1100:37;1025:118;;:::o;1149:222::-;1242:4;1280:2;1269:9;1265:18;1257:26;;1293:71;1361:1;1350:9;1346:17;1337:6;1293:71;:::i;:::-;1149:222;;;;:::o",
   "source": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.6;\n\ncontract SimpleStorage {\n    uint256 storedData;\n\n    function set(uint256 x) public {\n        storedData = x;\n    }\n\n    function get() public view returns (uint256) {\n        return storedData;\n    }\n}\n",
-  "sourcePath": "C:\\Users\\Lenovo\\Desktop\\Blockchain-Truffle-ReactJS-Lottery-master\\contracts\\SimpleStorage.sol",
+  "sourcePath": "D:\\Do an\\bingo-game\\contracts\\SimpleStorage.sol",
   "ast": {
     "absolutePath": "project:/contracts/SimpleStorage.sol",
     "exportedSymbols": {
@@ -1014,7 +1014,7 @@
     }
   },
   "schemaVersion": "3.4.14",
-  "updatedAt": "2023-07-01T02:10:58.868Z",
+  "updatedAt": "2023-07-01T05:17:39.618Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
