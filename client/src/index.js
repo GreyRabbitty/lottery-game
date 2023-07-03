@@ -1,10 +1,8 @@
-import "bootstrap/dist/css/bootstrap.css";
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
-import * as serviceWorker from "./serviceWorker";
+import "bootstrap/dist/css/bootstrap.css";
 
-ReactDOM.render(<App />, document.getElementById("root"));
-
-serviceWorker.unregister();
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);

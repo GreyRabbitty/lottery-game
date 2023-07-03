@@ -96,9 +96,7 @@ function App() {
       <div>
         {/* <h1> stored value : {storageValue ? storageValue : "not set yet"}</h1> */}
         <h2>Lottery Contract</h2>
-        <p className="text-3xl font-bold underline">
-          This contract is managed by {manager}
-        </p>
+        <p>This contract is managed by {manager}</p>
         <p>
           There are currently {players.length} people entered competing to win{" "}
           {web3.utils.fromWei(balance, "ether")}
