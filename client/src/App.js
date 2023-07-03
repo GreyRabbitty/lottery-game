@@ -63,7 +63,7 @@ function App() {
     }
   }, [web3, accounts, contract]);
 
-  const onSubmit = async (e) => {
+  const handleEnter = async (e) => {
     e.preventDefault();
     const accounts = await web3.eth.getAccounts();
 
@@ -77,7 +77,7 @@ function App() {
     window.location.reload();
   };
 
-  const onClick = async () => {
+  const handlePickWinner = async () => {
     const accounts = await web3.eth.getAccounts();
 
     setMessage("Waiting on  transaction success...");
@@ -103,7 +103,7 @@ function App() {
                   to win {web3.utils.fromWei(balance, "ether")}
                 </p>
                 <hr />
-                <form onSubmit={onSubmit}>
+                <form onSubmit={handleEnter}>
                   <h4>Want to try your luck?</h4>
                   <div>
                     <label>Amount of ether to enter</label>
@@ -121,7 +121,7 @@ function App() {
                   "0x603b987db398830576B661aeDfB9E8EDdd119C6b" && (
                   <div>
                     <h4>Ready to pick a winner?</h4>
-                    <button onClick={onClick}>Pick a winner</button>
+                    <button onClick={handlePickWinner}>Pick a winner</button>
                   </div>
                 )}
                 <h2>{message}</h2>
