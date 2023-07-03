@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Lottery from "./contracts/Lottery.json";
 import getWeb3 from "./getWeb3";
 import Players from "./components/Players";
+import WinnerPicker from "./components/WinnerPicker";
+import Register from "./components/Register";
 
 function App() {
   const [web3, setWeb3] = useState(undefined);
@@ -10,7 +12,7 @@ function App() {
   const [manager, setManager] = useState("");
   const [players, setPlayers] = useState([]);
   const [balance, setBalance] = useState("");
-  const [value, setValue] = useState("");
+
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -41,7 +43,6 @@ function App() {
   useEffect(() => {
     const runExample = async () => {
       try {
-        // await contract.methods.set(387).send({ from: accounts[0] });
         const r1 = await contract.methods.manager().call();
         const r2 = await contract.methods.getPlayers().call();
         const r3 = await web3.eth.getBalance(contract.options.address);
@@ -70,7 +71,7 @@ function App() {
     setMessage("Waiting on transaction success...");
     await contract.methods.enter().send({
       from: accounts[0],
-      value: web3.utils.toWei(value, "ether"),
+      value: web3.utils.toWei(1.75, "ether"),
     });
     setMessage("You have been entered!");
 
@@ -101,31 +102,10 @@ function App() {
                 <br />
                 <span className="fst-italic fw-semibold">{manager}</span>
               </p>
-              <hr />
-              <form onSubmit={handleEnter}>
-                <h4>Want to try your luck?</h4>
-                <div>
-                  <div>
-                    <label>Amount of ether to enter</label>
-                    <input
-                      className="form-control"
-                      value={value}
-                      onChange={(e) => {
-                        setValue(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <button type="submit" className="btn btn-primary">
-                    Enter
-                  </button>
-                </div>
-              </form>
+              <Register handleEnter={handleEnter} />
 
               {accounts[0] === "0x603b987db398830576B661aeDfB9E8EDdd119C6b" && (
-                <div>
-                  <h4>Ready to pick a winner?</h4>
-                  <button onClick={handlePickWinner}>Pick a winner</button>
-                </div>
+                <WinnerPicker handlePickWinner={handlePickWinner} />
               )}
               <h2>{message}</h2>
             </div>
