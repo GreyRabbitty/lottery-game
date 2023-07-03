@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Lottery from "./contracts/Lottery.json";
 import getWeb3 from "./getWeb3";
-import Participants from "./components/Participants";
+import Players from "./components/Players";
 
 function App() {
   const [web3, setWeb3] = useState(undefined);
@@ -67,7 +67,7 @@ function App() {
     e.preventDefault();
     const accounts = await web3.eth.getAccounts();
 
-    setMessage("Waiting on  transaction success...");
+    setMessage("Waiting on transaction success...");
     await contract.methods.enter().send({
       from: accounts[0],
       value: web3.utils.toWei(value, "ether"),
@@ -88,48 +88,50 @@ function App() {
   };
 
   return (
-    <div style={{ width: "800px", margin: "0 auto" }}>
+    <div className="d-flex justify-content-center">
       {typeof web3 === "undefined" ? (
-        <div>Loading Web3, accounts, and contract... Reload page</div>
+        <div className="p-1">Loading Web3, accounts, and contract...</div>
       ) : (
-        <>
-          <div>
-            <h2>Lottery Contract</h2>
-            <div className="d-flex">
-              <div>
-                <p>This contract is managed by {manager}</p>
-                <p>
-                  There are currently {players.length} people entered competing
-                  to win {web3.utils.fromWei(balance, "ether")}
-                </p>
-                <hr />
-                <form onSubmit={handleEnter}>
-                  <h4>Want to try your luck?</h4>
+        <div>
+          <h2 className="text-center p-2">Lottery Contract</h2>
+          <div className="d-flex">
+            <div className="me-4">
+              <p>
+                This contract is managed by
+                <br />
+                <span className="fst-italic fw-semibold">{manager}</span>
+              </p>
+              <hr />
+              <form onSubmit={handleEnter}>
+                <h4>Want to try your luck?</h4>
+                <div>
                   <div>
                     <label>Amount of ether to enter</label>
                     <input
+                      className="form-control"
                       value={value}
                       onChange={(e) => {
                         setValue(e.target.value);
                       }}
                     />
                   </div>
-                  <button>Enter</button>
-                </form>
+                  <button type="submit" className="btn btn-primary">
+                    Enter
+                  </button>
+                </div>
+              </form>
 
-                {accounts[0] ===
-                  "0x603b987db398830576B661aeDfB9E8EDdd119C6b" && (
-                  <div>
-                    <h4>Ready to pick a winner?</h4>
-                    <button onClick={handlePickWinner}>Pick a winner</button>
-                  </div>
-                )}
-                <h2>{message}</h2>
-              </div>
-              <Participants players={players} />
+              {accounts[0] === "0x603b987db398830576B661aeDfB9E8EDdd119C6b" && (
+                <div>
+                  <h4>Ready to pick a winner?</h4>
+                  <button onClick={handlePickWinner}>Pick a winner</button>
+                </div>
+              )}
+              <h2>{message}</h2>
             </div>
+            <Players players={players} balance={balance} web3={web3} />
           </div>
-        </>
+        </div>
       )}
     </div>
   );
