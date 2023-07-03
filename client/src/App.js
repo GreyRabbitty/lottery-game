@@ -70,10 +70,10 @@ function App() {
   }, [web3, accounts, contract]);
 
   // #region Events
-  const handleEnter = async () => {
+  const handleEnter = async (number) => {
     const accounts = await web3.eth.getAccounts();
 
-    await contract.methods.enter().send({
+    await contract.methods.enter(number).send({
       from: accounts[0],
       value: web3.utils.toWei("1.75", "ether"),
     });
@@ -114,7 +114,6 @@ function App() {
         confirmButtonText: "Ok",
       });
     }
-    window.location.reload();
   };
   // #endregion
 
@@ -133,7 +132,9 @@ function App() {
                 <span className="fst-italic fw-semibold">{manager}</span>
               </p>
 
-              {!players.includes(accounts[0]) && (
+              {!players
+                ?.map((player) => player.playerAddress)
+                ?.includes(accounts[0]) && (
                 <Register handleEnter={handleEnter} />
               )}
 

@@ -5,53 +5,65 @@ pragma solidity ^0.8.6;
 contract Lottery {
     address public manager;
     string public name;
-    address payable[] public players;
+    struct Player {
+        uint number;
+        address payable playerAddress;
+    }
+    Player[] public players;
     uint public luckyNumber;
+    address payable public winner;
 
     constructor() {
         manager = msg.sender;
     }
 
-    // payable do not accept any parameter i guess
-    function enter() public payable {
-        // used for validation
-        require(msg.value > (.01 ether));
+    function enter(uint number) public payable {
+        require(number >= 0 && number <= 9, "Number should be between 0 and 9");
+        require(msg.value > 0, "Please send some ether to enter the lottery");
 
-        players.push(payable(msg.sender));
+        players.push(Player(number, payable(msg.sender)));
     }
 
     function random() private view returns (uint256) {
-        // shaw3 or keccak256 are same thing used to make hashed
-        return
-            uint256(
-                keccak256(
-                    abi.encodePacked(block.difficulty, block.timestamp, players)
-                )
-            ); // uint(hash) : convert hexadecimal into int
+        return uint256(keccak256(abi.encodePacked(block.difficulty, block.timestamp))) % 10;
     }
 
-    function pickWinner() public payable restricted {
-        luckyNumber = random() % players.length;
-        players[luckyNumber].transfer(address(this).balance);
-        // this refer to current instance .. this.balance is the sum of the values of all the player submitted
+    function pickWinner() public restricted {
+        require(players.length > 0, "No players in the lottery");
+        luckyNumber = random();
 
-        // reset our lottery instance after winner declaired
-        players = new address payable[](0);
+        address payable[] memory winners;
+        uint256 count = 0;
+
+        for (uint256 i = 0; i < players.length; i++) {
+            if (players[i].number == luckyNumber) {
+                winners[count] = players[i].playerAddress;
+                count++;
+            }
+        }
+
+        require(count > 0, "No winner found");
+
+        uint256 prize = address(this).balance / (count + 1);
+
+        for (uint256 i = 0; i < count; i++) {
+            winners[i].transfer(prize);
+        }
+
+        delete players;
     }
 
-    // for do not repeat your self .. means same block of code
     modifier restricted() {
-        // only manager can pickup the winner
-        require(msg.sender == manager);
+        require(msg.sender == manager, "Only the manager can pick the winner");
         _;
     }
 
-    function getPlayers() public view returns (address payable[] memory) {
+    function getPlayers() public view returns (Player[] memory) {
         return players;
     }
 
-    function getWinner() public view returns (uint, address) {
-        require(players.length > 0, "No players in the lottery");
-        return (luckyNumber, players[luckyNumber]);
+    function getWinnerData() public view returns (address payable, uint) {
+        require(winner != address(0), "No winner found");
+        return (winner, luckyNumber);
     }
 }
