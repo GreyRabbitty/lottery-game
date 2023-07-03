@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Lottery from "./contracts/Lottery.json";
 import getWeb3 from "./getWeb3";
+import Participants from "./components/Participants";
 
 function App() {
   const [web3, setWeb3] = useState(undefined);
@@ -73,6 +74,7 @@ function App() {
       value: web3.utils.toWei(value, "ether"),
     });
     setMessage("You have been entered!");
+    window.location.reload();
   };
 
   const onClick = async () => {
@@ -90,38 +92,44 @@ function App() {
       {typeof web3 === "undefined" ? (
         <div>Loading Web3, accounts, and contract... Reload page</div>
       ) : (
-        <div>
-          {/* <h1> stored value : {storageValue ? storageValue : "not set yet"}</h1> */}
-          <h2>Lottery Contract</h2>
-          <p>This contract is managed by {manager}</p>
-          <p>
-            There are currently {players.length} people entered competing to win{" "}
-            {web3.utils.fromWei(balance, "ether")}
-          </p>
-          <hr />
-          <form onSubmit={onSubmit}>
-            <h4>Want to try your luck?</h4>
-            <div>
-              <label>Amount of ether to enter</label>
-              <input
-                value={value}
-                onChange={(e) => {
-                  setValue(e.target.value);
-                }}
-              />
-            </div>
-            <button>Enter</button>
-          </form>
-          <hr />
-
+        <>
           <div>
-            <h4>Ready to pick a winner?</h4>
-            <button onClick={onClick}>Pick a winner</button>
-          </div>
+            <h2>Lottery Contract</h2>
+            <div className="d-flex">
+              <div>
+                <p>This contract is managed by {manager}</p>
+                <p>
+                  There are currently {players.length} people entered competing
+                  to win {web3.utils.fromWei(balance, "ether")}
+                </p>
+                <hr />
+                <form onSubmit={onSubmit}>
+                  <h4>Want to try your luck?</h4>
+                  <div>
+                    <label>Amount of ether to enter</label>
+                    <input
+                      value={value}
+                      onChange={(e) => {
+                        setValue(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <button>Enter</button>
+                </form>
+                <hr />
 
-          <hr />
-          <h2>{message}</h2>
-        </div>
+                <div>
+                  <h4>Ready to pick a winner?</h4>
+                  <button onClick={onClick}>Pick a winner</button>
+                </div>
+
+                <hr />
+                <h2>{message}</h2>
+              </div>
+              <Participants players={players} />
+            </div>
+          </div>
+        </>
       )}
     </div>
   );
