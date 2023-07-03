@@ -10,7 +10,6 @@ export default function Register({ handleEnter }) {
         <input
           type="text"
           value={number}
-          defaultValue={0}
           onChange={(e) => setNumber(e.target.value)}
           className="form-control me-2"
         />

@@ -25,33 +25,28 @@ contract Lottery {
     }
 
     function random() private view returns (uint256) {
-        return uint256(keccak256(abi.encodePacked(block.difficulty, block.timestamp))) % 10;
+        return uint256(keccak256(abi.encodePacked(block.difficulty, block.timestamp))) % 2;
     }
 
-    function pickWinner() public restricted {
-        require(players.length > 0, "No players in the lottery");
+    function pickWinner() public payable restricted {
         luckyNumber = random();
-
-        address payable[] memory winners;
-        uint256 count = 0;
 
         for (uint256 i = 0; i < players.length; i++) {
             if (players[i].number == luckyNumber) {
-                winners[count] = players[i].playerAddress;
-                count++;
+                winner = players[i].playerAddress;
+                break;
             }
         }
 
-        require(count > 0, "No winner found");
+        require(winner != address(0), "No winner found");
 
-        uint256 prize = address(this).balance / (count + 1);
+        uint256 prize = address(this).balance;
 
-        for (uint256 i = 0; i < count; i++) {
-            winners[i].transfer(prize);
-        }
+        winner.transfer(prize);
 
         delete players;
     }
+
 
     modifier restricted() {
         require(msg.sender == manager, "Only the manager can pick the winner");

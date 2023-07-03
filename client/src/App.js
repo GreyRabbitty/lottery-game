@@ -13,7 +13,6 @@ function App() {
   const [manager, setManager] = useState("");
   const [players, setPlayers] = useState([]);
   const [balance, setBalance] = useState("");
-  const [winner, setWinner] = useState(null);
 
   useEffect(() => {
     const init = async () => {
@@ -94,18 +93,17 @@ function App() {
       from: accounts[0],
     });
     try {
-      const result = await contract.methods.getWinner().call();
+      const result = await contract.methods.getWinnerData().call();
       const luckyNumber = result[0];
       const winnerAddress = result[1];
-      setWinner({ luckyNumber, winnerAddress });
+
       await Swal.fire({
         icon: "success",
         title: "Winner found",
-        text: `Winner: ${winnerAddress}. Lucky number (index): ${
-          luckyNumber + 1
-        }`,
+        text: `Winner: ${winnerAddress}. Lucky number: ${luckyNumber}`,
         confirmButtonText: "Ok",
       });
+      window.location.reload();
     } catch (error) {
       Swal.fire({
         icon: "error",

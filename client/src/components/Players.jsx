@@ -1,5 +1,4 @@
 export default function Players({ accounts, players, balance, web3 }) {
-  console.log(players);
   return (
     <div>
       <h4>Players</h4>
@@ -25,7 +24,7 @@ export default function Players({ accounts, players, balance, web3 }) {
         {players.map((player) => (
           <li className="list-group-item" key={player}>
             <span className="fs-6 fst-italic">
-              <span class="badge text-bg-warning">{player["number"]}</span>{" "}
+              <span className="badge text-bg-warning">{player["number"]}</span>{" "}
               {player["playerAddress"]}{" "}
               {accounts[0] === player["playerAddress"] && (
                 <span className="fw-semibold text-danger">(me)</span>
