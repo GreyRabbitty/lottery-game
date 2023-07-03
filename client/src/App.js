@@ -94,8 +94,8 @@ function App() {
     });
     try {
       const result = await contract.methods.getWinnerData().call();
-      const luckyNumber = result[0];
-      const winnerAddress = result[1];
+      const winnerAddress = result[0];
+      const luckyNumber = result[1];
 
       await Swal.fire({
         icon: "success",
