@@ -101,7 +101,9 @@ function App() {
       await Swal.fire({
         icon: "success",
         title: "Winner found",
-        text: `Winner: ${winnerAddress}. Lucky number (index): ${luckyNumber}`,
+        text: `Winner: ${winnerAddress}. Lucky number (index): ${
+          luckyNumber + 1
+        }`,
         confirmButtonText: "Ok",
       });
     } catch (error) {
@@ -136,11 +138,19 @@ function App() {
               )}
 
               {accounts[0] === "0x603b987db398830576B661aeDfB9E8EDdd119C6b" && (
-                <WinnerPicker handlePickWinner={handlePickWinner} />
+                <WinnerPicker
+                  players={players}
+                  handlePickWinner={handlePickWinner}
+                />
               )}
             </div>
 
-            <Players players={players} balance={balance} web3={web3} />
+            <Players
+              accounts={accounts}
+              players={players}
+              balance={balance}
+              web3={web3}
+            />
           </div>
         </div>
       )}

@@ -1,4 +1,4 @@
-export default function Players({ players, balance, web3 }) {
+export default function Players({ accounts, players, balance, web3 }) {
   return (
     <div>
       <h4>Players</h4>
@@ -23,7 +23,12 @@ export default function Players({ players, balance, web3 }) {
       <ol className="list-group list-group-numbered">
         {players.map((player) => (
           <li className="list-group-item" key={player}>
-            <span className="fs-6 fst-italic">{player}</span>
+            <span className="fs-6 fst-italic">
+              {player}{" "}
+              {accounts[0] === player && (
+                <span className="fw-semibold text-danger">(me)</span>
+              )}
+            </span>
           </li>
         ))}
       </ol>
