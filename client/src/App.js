@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import Players from "./components/Players";
+import Register from "./components/Register";
+import WinnerPicker from "./components/WinnerPicker";
 import Lottery from "./contracts/Lottery.json";
 import getWeb3 from "./getWeb3";
-import Players from "./components/Players";
-import WinnerPicker from "./components/WinnerPicker";
-import Register from "./components/Register";
 
 function App() {
   const [web3, setWeb3] = useState(undefined);
@@ -12,8 +13,7 @@ function App() {
   const [manager, setManager] = useState("");
   const [players, setPlayers] = useState([]);
   const [balance, setBalance] = useState("");
-
-  const [message, setMessage] = useState("");
+  const [winner, setWinner] = useState(null);
 
   useEffect(() => {
     const init = async () => {
@@ -31,9 +31,11 @@ function App() {
         setContract(instance);
         setAccounts(accounts);
       } catch (error) {
-        alert(
-          `Failed to load web3, accounts, or contract. Did you migrate the contract or install MetaMask? Check console for details.`
-        );
+        Swal.fire({
+          icon: "error",
+          title: "Failed to load web3, accounts, or contract",
+          text: "Did you migrate the contract or install MetaMask? Check console for details.",
+        });
         console.error(error);
       }
     };
@@ -50,9 +52,12 @@ function App() {
         setPlayers(r2);
         setBalance(r3);
       } catch {
-        alert(
-          "No contract deployed or account error; please check that MetaMask is on the correct network, reset the account and reload page"
-        );
+        Swal.fire({
+          icon: "error",
+          title: "Connection error",
+          text: "Please check MetaMask network, reset account, and reload page for contract/account error",
+          confirmButtonText: "Ok",
+        });
       }
     };
     if (
@@ -64,29 +69,52 @@ function App() {
     }
   }, [web3, accounts, contract]);
 
-  const handleEnter = async (e) => {
-    e.preventDefault();
+  // #region Events
+  const handleEnter = async () => {
     const accounts = await web3.eth.getAccounts();
 
-    setMessage("Waiting on transaction success...");
     await contract.methods.enter().send({
       from: accounts[0],
-      value: web3.utils.toWei(1.75, "ether"),
+      value: web3.utils.toWei("1.75", "ether"),
     });
-    setMessage("You have been entered!");
 
+    await Swal.fire({
+      title: "Success!",
+      text: "You have joined the game",
+      icon: "success",
+      confirmButtonText: "Ok",
+    });
     window.location.reload();
   };
 
   const handlePickWinner = async () => {
     const accounts = await web3.eth.getAccounts();
 
-    setMessage("Waiting on  transaction success...");
     await contract.methods.pickWinner().send({
       from: accounts[0],
     });
-    setMessage("You result has been declared");
+    try {
+      const result = await contract.methods.getWinner().call();
+      const luckyNumber = result[0];
+      const winnerAddress = result[1];
+      setWinner({ luckyNumber, winnerAddress });
+      await Swal.fire({
+        icon: "success",
+        title: "Winner found",
+        text: `Winner: ${winnerAddress}. Lucky number (index): ${luckyNumber}`,
+        confirmButtonText: "Ok",
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Winner not found",
+        text: "No winner now",
+        confirmButtonText: "Ok",
+      });
+    }
+    window.location.reload();
   };
+  // #endregion
 
   return (
     <div className="d-flex justify-content-center">
@@ -98,17 +126,20 @@ function App() {
           <div className="d-flex">
             <div className="me-4">
               <p>
-                This contract is managed by
+                The current game is managed by
                 <br />
                 <span className="fst-italic fw-semibold">{manager}</span>
               </p>
-              <Register handleEnter={handleEnter} />
+
+              {!players.includes(accounts[0]) && (
+                <Register handleEnter={handleEnter} />
+              )}
 
               {accounts[0] === "0x603b987db398830576B661aeDfB9E8EDdd119C6b" && (
                 <WinnerPicker handlePickWinner={handlePickWinner} />
               )}
-              <h2>{message}</h2>
             </div>
+
             <Players players={players} balance={balance} web3={web3} />
           </div>
         </div>

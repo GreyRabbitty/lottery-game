@@ -1,9 +1,12 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.8.6;
 
 contract Lottery {
     address public manager;
     string public name;
     address payable[] public players;
+    uint public luckyNumber;
 
     constructor() {
         manager = msg.sender;
@@ -28,11 +31,8 @@ contract Lottery {
     }
 
     function pickWinner() public payable restricted {
-        // // only manager can pickup the winner
-        // require(msg.sender == manager);
-
-        uint256 index = random() % players.length;
-        players[index].transfer(address(this).balance);
+        luckyNumber = random() % players.length;
+        players[luckyNumber].transfer(address(this).balance);
         // this refer to current instance .. this.balance is the sum of the values of all the player submitted
 
         // reset our lottery instance after winner declaired
@@ -48,5 +48,10 @@ contract Lottery {
 
     function getPlayers() public view returns (address payable[] memory) {
         return players;
+    }
+
+    function getWinner() public view returns (uint, address) {
+        require(players.length > 0, "No players in the lottery");
+        return (luckyNumber, players[luckyNumber]);
     }
 }
