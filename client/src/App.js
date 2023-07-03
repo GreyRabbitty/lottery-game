@@ -85,46 +85,46 @@ function App() {
     setMessage("You result has been declared");
   };
 
-  if (typeof web3 === "undefined") {
-    return (
-      <div className="App">
-        Loading Web3, accounts, and contract... Reload page
-      </div>
-    );
-  } else {
-    return (
-      <div>
-        {/* <h1> stored value : {storageValue ? storageValue : "not set yet"}</h1> */}
-        <h2>Lottery Contract</h2>
-        <p>This contract is managed by {manager}</p>
-        <p>
-          There are currently {players.length} people entered competing to win{" "}
-          {web3.utils.fromWei(balance, "ether")}
-        </p>
-        <hr />
-        <form onSubmit={onSubmit}>
-          <h4>Want to try your luck?</h4>
+  return (
+    <div style={{ width: "800px", margin: "0 auto" }}>
+      {typeof web3 === "undefined" ? (
+        <div>Loading Web3, accounts, and contract... Reload page</div>
+      ) : (
+        <div>
+          {/* <h1> stored value : {storageValue ? storageValue : "not set yet"}</h1> */}
+          <h2>Lottery Contract</h2>
+          <p>This contract is managed by {manager}</p>
+          <p>
+            There are currently {players.length} people entered competing to win{" "}
+            {web3.utils.fromWei(balance, "ether")}
+          </p>
+          <hr />
+          <form onSubmit={onSubmit}>
+            <h4>Want to try your luck?</h4>
+            <div>
+              <label>Amount of ether to enter</label>
+              <input
+                value={value}
+                onChange={(e) => {
+                  setValue(e.target.value);
+                }}
+              />
+            </div>
+            <button>Enter</button>
+          </form>
+          <hr />
+
           <div>
-            <label>Amount of ether to enter</label>
-            <input
-              value={value}
-              onChange={(e) => {
-                setValue(e.target.value);
-              }}
-            />
+            <h4>Ready to pick a winner?</h4>
+            <button onClick={onClick}>Pick a winner</button>
           </div>
-          <button>Enter</button>
-        </form>
-        <hr />
 
-        <h4>Ready to pick a winner?</h4>
-        <button onClick={onClick}>Pick a winner</button>
-
-        <hr />
-        <h2>{message}</h2>
-      </div>
-    );
-  }
+          <hr />
+          <h2>{message}</h2>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default App;
