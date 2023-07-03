@@ -1,20 +1,9 @@
-// SPDX-License-Identifier: MIT
-
 pragma solidity ^0.8.6;
 
 contract Lottery {
     address public manager;
     string public name;
     address payable[] public players;
-
-    // msg is global valiable
-
-    /*
-        msg.sender -> sender address
-        msg.value -> value that is send
-        msg.gas   -> gas limit 
-        msg.data  
-    */
 
     constructor() {
         manager = msg.sender;
@@ -60,9 +49,4 @@ contract Lottery {
     function getPlayers() public view returns (address payable[] memory) {
         return players;
     }
-
-    // function returnEntries(){
-    //     // cancel the lottery and return the price to respective players
-
-    // }
 }

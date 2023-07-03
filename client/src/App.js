@@ -12,13 +12,12 @@ function App() {
   const [balance, setBalance] = useState("");
   const [value, setValue] = useState("");
   const [message, setMessage] = useState("");
+
   useEffect(() => {
     const init = async () => {
       try {
         const web3 = await getWeb3();
-
         const accounts = await web3.eth.getAccounts();
-
         const networkId = await web3.eth.net.getId();
         const deployedNetwork = Lottery.networks[networkId];
         const instance = new web3.eth.Contract(
@@ -74,6 +73,7 @@ function App() {
       value: web3.utils.toWei(value, "ether"),
     });
     setMessage("You have been entered!");
+
     window.location.reload();
   };
 
@@ -116,14 +116,14 @@ function App() {
                   </div>
                   <button>Enter</button>
                 </form>
-                <hr />
 
-                <div>
-                  <h4>Ready to pick a winner?</h4>
-                  <button onClick={onClick}>Pick a winner</button>
-                </div>
-
-                <hr />
+                {accounts[0] ===
+                  "0x603b987db398830576B661aeDfB9E8EDdd119C6b" && (
+                  <div>
+                    <h4>Ready to pick a winner?</h4>
+                    <button onClick={onClick}>Pick a winner</button>
+                  </div>
+                )}
                 <h2>{message}</h2>
               </div>
               <Participants players={players} />
