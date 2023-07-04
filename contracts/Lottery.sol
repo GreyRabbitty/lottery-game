@@ -13,6 +13,10 @@ contract Lottery {
     uint public luckyNumber;
     address payable public winner;
 
+    event PlayerEntered(Player[] players);
+    event WinnerPicked(uint256 luckyNumber, address winner);
+    event NoWinnerFound(uint256 luckyNumber);
+
     constructor() {
         manager = msg.sender;
     }
@@ -22,6 +26,8 @@ contract Lottery {
         require(msg.value > 0, "Please send some ether to enter the lottery");
 
         players.push(Player(number, payable(msg.sender)));
+
+        emit PlayerEntered(players);
     }
 
     function random() private view returns (uint256) {
@@ -38,15 +44,19 @@ contract Lottery {
             }
         }
 
-        require(winner != address(0), "No winner found");
+        if (winner == address(0)) {
+            delete players;
 
-        uint256 prize = address(this).balance;
+            emit NoWinnerFound(luckyNumber);
+        } else {
+            uint256 prize = address(this).balance;
+            winner.transfer(prize);
 
-        winner.transfer(prize);
+            delete players;
 
-        delete players;
+            emit WinnerPicked(luckyNumber, winner);
+        }
     }
-
 
     modifier restricted() {
         require(msg.sender == manager, "Only the manager can pick the winner");

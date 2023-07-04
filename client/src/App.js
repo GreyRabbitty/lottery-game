@@ -5,66 +5,109 @@ import Register from "./components/Register";
 import WinnerPicker from "./components/WinnerPicker";
 import Lottery from "./contracts/Lottery.json";
 import getWeb3 from "./getWeb3";
+import getWeb3Socket from "./getWeb3Socket";
 
-function App() {
-  const [web3, setWeb3] = useState(undefined);
-  const [accounts, setAccounts] = useState(undefined);
-  const [contract, setContract] = useState(undefined);
+export default function App() {
+  const [web3, setWeb3] = useState(null);
+  const [accounts, setAccounts] = useState(null);
+  const [contract, setContract] = useState(null);
   const [manager, setManager] = useState("");
   const [players, setPlayers] = useState([]);
   const [balance, setBalance] = useState("");
 
   useEffect(() => {
-    const init = async () => {
+    (async () => {
       try {
         const web3 = await getWeb3();
+        const web3Socket = getWeb3Socket();
+
         const accounts = await web3.eth.getAccounts();
         const networkId = await web3.eth.net.getId();
         const deployedNetwork = Lottery.networks[networkId];
+
         const instance = new web3.eth.Contract(
           Lottery.abi,
           deployedNetwork && deployedNetwork.address
         );
+        const socket = new web3Socket.eth.Contract(
+          Lottery.abi,
+          deployedNetwork && deployedNetwork.address
+        );
+
+        socket.events.PlayerEntered({}, (error, event) => {
+          if (!error) {
+            const playersData = event.returnValues.players.map((player) => ({
+              playerAddress: player.playerAddress,
+              number: player.number,
+            }));
+
+            setPlayers(playersData);
+          }
+        });
+
+        socket.events.NoWinnerFound({}, (error, event) => {
+          if (!error) {
+            const luckyNumber = event.returnValues.luckyNumber;
+
+            Swal.fire({
+              title: "No winner found",
+              text: `The lucky number is ${luckyNumber}`,
+              icon: "question",
+            });
+
+            setPlayers([]);
+          }
+        });
+
+        socket.events.WinnerPicked({}, (error, event) => {
+          if (!error) {
+            const luckyNumber = event.returnValues.luckyNumber;
+            const winnerAddress = event.returnValues.winner.playerAddress;
+
+            Swal.fire({
+              title: "Winner picked",
+              text: `The lucky number is ${luckyNumber}. Winner is ${winnerAddress}`,
+              icon: "success",
+            });
+
+            setPlayers([]);
+            setBalance(0);
+          }
+        });
 
         setWeb3(web3);
         setContract(instance);
         setAccounts(accounts);
       } catch (error) {
         Swal.fire({
-          icon: "error",
           title: "Failed to load web3, accounts, or contract",
           text: "Did you migrate the contract or install MetaMask? Check console for details.",
+          icon: "error",
         });
         console.error(error);
       }
-    };
-    init();
-  }, []);
+    })();
+  }, [setPlayers]);
 
   useEffect(() => {
-    const runExample = async () => {
+    const fetch = async () => {
       try {
-        const r1 = await contract.methods.manager().call();
-        const r2 = await contract.methods.getPlayers().call();
-        const r3 = await web3.eth.getBalance(contract.options.address);
-        setManager(r1);
-        setPlayers(r2);
-        setBalance(r3);
+        const managerData = await contract.methods.manager().call();
+        const playersData = await contract.methods.getPlayers().call();
+        const balanceData = await web3.eth.getBalance(contract.options.address);
+        setManager(managerData);
+        setPlayers(playersData);
+        setBalance(balanceData);
       } catch {
         Swal.fire({
-          icon: "error",
           title: "Connection error",
           text: "Please check MetaMask network, reset account, and reload page for contract/account error",
-          confirmButtonText: "Ok",
+          icon: "error",
         });
       }
     };
-    if (
-      typeof web3 != "undefined" &&
-      typeof accounts != "undefined" &&
-      typeof contract != "undefined"
-    ) {
-      runExample();
+    if (web3 !== null && accounts !== null && contract !== null) {
+      fetch();
     }
   }, [web3, accounts, contract]);
 
@@ -81,9 +124,7 @@ function App() {
       title: "Success!",
       text: "You have joined the game",
       icon: "success",
-      confirmButtonText: "Ok",
     });
-    window.location.reload();
   };
 
   const handlePickWinner = async () => {
@@ -98,18 +139,15 @@ function App() {
       const luckyNumber = result[1];
 
       await Swal.fire({
-        icon: "success",
         title: "Winner found",
         text: `Winner: ${winnerAddress}. Lucky number: ${luckyNumber}`,
-        confirmButtonText: "Ok",
+        icon: "success",
       });
-      window.location.reload();
     } catch (error) {
       Swal.fire({
-        icon: "error",
         title: "Winner not found",
         text: "No winner now",
-        confirmButtonText: "Ok",
+        icon: "error",
       });
     }
   };
@@ -117,7 +155,7 @@ function App() {
 
   return (
     <div className="d-flex justify-content-center">
-      {typeof web3 === "undefined" ? (
+      {!web3 ? (
         <div className="p-1">Loading Web3, accounts, and contract...</div>
       ) : (
         <div>
@@ -136,7 +174,7 @@ function App() {
                 <Register handleEnter={handleEnter} />
               )}
 
-              {accounts[0] === "0x603b987db398830576B661aeDfB9E8EDdd119C6b" && (
+              {accounts[0] === "0xf1B45d65C6a646c9684c578CC2c2C7d751319848" && (
                 <WinnerPicker
                   players={players}
                   handlePickWinner={handlePickWinner}
@@ -156,5 +194,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
