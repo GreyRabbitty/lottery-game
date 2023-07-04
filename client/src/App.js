@@ -6,6 +6,7 @@ import WinnerPicker from "./components/WinnerPicker";
 import Lottery from "./contracts/Lottery.json";
 import getWeb3 from "./getWeb3";
 import getWeb3Socket from "./getWeb3Socket";
+import Manager from "./components/Manager";
 
 export default function App() {
   const [web3, setWeb3] = useState(null);
@@ -13,7 +14,6 @@ export default function App() {
   const [contract, setContract] = useState(null);
   const [manager, setManager] = useState("");
   const [players, setPlayers] = useState([]);
-  const [balance, setBalance] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -71,7 +71,6 @@ export default function App() {
             });
 
             setPlayers([]);
-            setBalance(0);
           }
         });
 
@@ -94,10 +93,8 @@ export default function App() {
       try {
         const managerData = await contract.methods.manager().call();
         const playersData = await contract.methods.getPlayers().call();
-        const balanceData = await web3.eth.getBalance(contract.options.address);
         setManager(managerData);
         setPlayers(playersData);
-        setBalance(balanceData);
       } catch {
         Swal.fire({
           title: "Connection error",
@@ -159,14 +156,12 @@ export default function App() {
         <div className="p-1">Loading Web3, accounts, and contract...</div>
       ) : (
         <div>
-          <h2 className="text-center p-2">Lottery Contract</h2>
+          <h2 className="mt-2 mb-4 p-4 text-bg-primary text-center rounded">
+            Lottery Game 🍀
+          </h2>
           <div className="d-flex">
-            <div className="me-4">
-              <p>
-                The current game is managed by
-                <br />
-                <span className="fst-italic fw-semibold">{manager}</span>
-              </p>
+            <div className="me-4" style={{ maxWidth: "400px" }}>
+              <Manager manager={manager} />
 
               {!players
                 ?.map((player) => player.playerAddress)
@@ -182,12 +177,7 @@ export default function App() {
               )}
             </div>
 
-            <Players
-              accounts={accounts}
-              players={players}
-              balance={balance}
-              web3={web3}
-            />
+            <Players accounts={accounts} players={players} />
           </div>
         </div>
       )}

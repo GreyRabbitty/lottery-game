@@ -1,6 +1,6 @@
 export default function WinnerPicker({ handlePickWinner, players }) {
   return (
-    <div>
+    <div className="border rounded px-4 py-3">
       <h4>Find who has the good luck</h4>
       <button
         className="btn btn-success"

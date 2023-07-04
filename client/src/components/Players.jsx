@@ -1,6 +1,6 @@
-export default function Players({ accounts, players, balance, web3 }) {
+export default function Players({ accounts, players }) {
   return (
-    <div>
+    <div className="border rounded px-4 py-3">
       <h4>Players</h4>
       <table className="table table-bordered">
         <tbody>
@@ -12,27 +12,14 @@ export default function Players({ accounts, players, balance, web3 }) {
             <td className="text-center">
               Compete{" "}
               <span className="fw-bold text-primary">
-                {web3.utils.fromWei(balance, "ether")}
+                {1.75 * players.length}
               </span>{" "}
               ETH
             </td>
           </tr>
         </tbody>
       </table>
-      <p className="mt-2 mb-1">List of current players' address:</p>
-      {/* <ul className="list-group">
-        {players.map((player) => (
-          <li className="list-group-item" key={player}>
-            <span className="fs-6 fst-italic">
-              </span>{" "}
-              {player["playerAddress"]}{" "}
-              {accounts[0] === player["playerAddress"] && (
-                <span className="fw-semibold text-danger">(me)</span>
-              )}
-            </span>
-          </li>
-        ))}
-      </ul> */}
+      <h5 className="mt-4 mb-2">List of current players' address</h5>
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
@@ -45,14 +32,24 @@ export default function Players({ accounts, players, balance, web3 }) {
           {players?.map((player, index) => (
             <tr>
               <td className="text-center">{index + 1}</td>
-              <td className="text-center">
-                <span className="fs-6 fst-italic">{player?.playerAddress}</span>
+              <td>
+                <span className="fs-6 fst-italic">{player?.playerAddress}</span>{" "}
+                {accounts[0] === player["playerAddress"] && (
+                  <span className="fw-semibold text-danger">(me)</span>
+                )}
               </td>
               <td className="text-center">
                 <span className="badge text-bg-warning">{player?.number}</span>
               </td>
             </tr>
           ))}
+          {players?.length === 0 && (
+            <tr>
+              <td colSpan="3" className="text-center">
+                No players yet
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
