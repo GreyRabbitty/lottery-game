@@ -11,7 +11,6 @@ contract Lottery {
     }
     Player[] public players;
     uint public luckyNumber;
-    address payable public winner;
 
     event PlayerEntered(Player[] players);
     event WinnerPicked(uint256 luckyNumber, address winner);
@@ -36,7 +35,7 @@ contract Lottery {
 
     function pickWinner() public payable restricted {
         luckyNumber = random();
-        winner = payable(address(0));
+        address payable winner;
 
         for (uint256 i = 0; i < players.length; i++) {
             if (players[i].number == luckyNumber) {
@@ -66,10 +65,5 @@ contract Lottery {
 
     function getPlayers() public view returns (Player[] memory) {
         return players;
-    }
-
-    function getWinnerData() public view returns (address payable, uint) {
-        require(winner != address(0), "No winner found");
-        return (winner, luckyNumber);
     }
 }

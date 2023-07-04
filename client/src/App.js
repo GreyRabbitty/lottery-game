@@ -62,7 +62,7 @@ export default function App() {
         socket.events.WinnerPicked({}, (error, event) => {
           if (!error) {
             const luckyNumber = event.returnValues.luckyNumber;
-            const winnerAddress = event.returnValues.winner.playerAddress;
+            const winnerAddress = event.returnValues.winner;
 
             Swal.fire({
               title: "Winner picked",
