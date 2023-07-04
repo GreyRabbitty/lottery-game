@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Manager from "./components/Manager";
+import MyAddress from "./components/MyAddress";
 import Players from "./components/Players";
 import Register from "./components/Register";
 import WinnerPicker from "./components/WinnerPicker";
 import Lottery from "./contracts/Lottery.json";
-import getWeb3Socket from "./utils/getWeb3Socket";
 import getWeb3 from "./utils/getWeb3";
+import getWeb3Socket from "./utils/getWeb3Socket";
 
 export default function App() {
   const [web3, setWeb3] = useState(null);
@@ -50,7 +51,7 @@ export default function App() {
             const luckyNumber = event.returnValues.luckyNumber;
 
             Swal.fire({
-              title: "No winner found",
+              title: "No winner",
               text: `The lucky number is ${luckyNumber}`,
               icon: "question",
             });
@@ -64,11 +65,19 @@ export default function App() {
             const luckyNumber = event.returnValues.luckyNumber;
             const winnerAddress = event.returnValues.winner;
 
-            Swal.fire({
-              title: "Winner picked",
-              text: `The lucky number is ${luckyNumber}. Winner is ${winnerAddress}`,
-              icon: "success",
-            });
+            if (accounts[0] === winnerAddress) {
+              Swal.fire({
+                title: "Congratulations",
+                text: `The lucky number is ${luckyNumber}. Your are the winner!`,
+                icon: "success",
+              });
+            } else {
+              Swal.fire({
+                title: "Apologies",
+                text: `The lucky number is ${luckyNumber}. Winner is ${winnerAddress}. Better luck next time!`,
+                icon: "warning",
+              });
+            }
 
             setPlayers([]);
           }
@@ -160,7 +169,10 @@ export default function App() {
               )}
             </div>
 
-            <Players accounts={accounts} players={players} />
+            <div>
+              <MyAddress accounts={accounts} />
+              <Players accounts={accounts} players={players} />
+            </div>
           </div>
         </div>
       )}

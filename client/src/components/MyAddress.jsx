@@ -1,11 +1,11 @@
-export default function Manager({ manager }) {
+export default function MyAddress({ accounts }) {
   return (
     <div className="shadow-sm card mb-3">
       <div className="card-header">
-        <i class="bi bi-controller"></i> Manager
+        <i class="bi bi-person"></i> My address
       </div>
       <div className="card-body">
-        <p className="card-text">{manager}</p>
+        <p className="card-text">{accounts[0]}</p>
       </div>
     </div>
   );
