@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import Manager from "./components/Manager";
 import Players from "./components/Players";
 import Register from "./components/Register";
 import WinnerPicker from "./components/WinnerPicker";
 import Lottery from "./contracts/Lottery.json";
-import getWeb3 from "./getWeb3";
-import getWeb3Socket from "./getWeb3Socket";
-import Manager from "./components/Manager";
+import getWeb3Socket from "./utils/getWeb3Socket";
+import getWeb3 from "./utils/getWeb3";
 
 export default function App() {
   const [web3, setWeb3] = useState(null);
@@ -156,8 +156,8 @@ export default function App() {
         <div className="p-1">Loading Web3, accounts, and contract...</div>
       ) : (
         <div>
-          <h2 className="mt-2 mb-4 p-4 text-bg-primary text-center rounded">
-            Lottery Game 🍀
+          <h2 className="shadow-sm mt-2 mb-4 p-4 text-bg-primary text-center rounded">
+            Lottery game 🍀🍀
           </h2>
           <div className="d-flex">
             <div className="me-4" style={{ maxWidth: "400px" }}>

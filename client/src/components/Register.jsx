@@ -19,7 +19,7 @@ export default function Register({ handleEnter }) {
   };
 
   return (
-    <div className="border rounded mb-4 px-4 py-3">
+    <div className="shadow-sm bg-body-tertiary border rounded mb-4 px-4 py-3">
       <h4>Try your luck by registering</h4>
       <div className="form-text">Choose your favorite number from (0 to 9)</div>
       <div className="d-flex">

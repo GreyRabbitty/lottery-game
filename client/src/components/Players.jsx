@@ -1,6 +1,6 @@
 export default function Players({ accounts, players }) {
   return (
-    <div className="border rounded px-4 py-3">
+    <div className="shadow-sm bg-body-tertiary border rounded px-4 py-3">
       <h4>Players</h4>
       <table className="table table-bordered">
         <tbody>
