@@ -30,11 +30,11 @@ export default function Players({ accounts, players }) {
         </thead>
         <tbody>
           {players?.map((player, index) => (
-            <tr>
+            <tr key={player?.playerAddress}>
               <td className="text-center">{index + 1}</td>
               <td>
                 <span className="fs-6 fst-italic">{player?.playerAddress}</span>{" "}
-                {accounts[0] === player["playerAddress"] && (
+                {accounts[0] === player?.playerAddress && (
                   <span className="fw-semibold text-danger">(me)</span>
                 )}
               </td>

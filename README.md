@@ -33,7 +33,7 @@ Tạo một trò chơi khuyến mãi dựa vào cơ chế phát sinh ngẫu nhi�
 
 - [Ganache](https://trufflesuite.com/ganache/)
 - [Truffle](https://www.npmjs.com/package/truffle)
-- [Extesion ví Metamask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn) trên trình duyệt
+- [Extension ví Metamask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn) trên trình duyệt
 
 ## Cách chạy
 

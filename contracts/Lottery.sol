@@ -31,11 +31,12 @@ contract Lottery {
     }
 
     function random() private view returns (uint256) {
-        return uint256(keccak256(abi.encodePacked(block.difficulty, block.timestamp))) % 2;
+        return uint256(keccak256(abi.encodePacked(blockhash(block.number - 1), block.timestamp))) % 2;
     }
 
     function pickWinner() public payable restricted {
         luckyNumber = random();
+        winner = payable(address(0));
 
         for (uint256 i = 0; i < players.length; i++) {
             if (players[i].number == luckyNumber) {

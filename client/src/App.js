@@ -130,23 +130,6 @@ export default function App() {
     await contract.methods.pickWinner().send({
       from: accounts[0],
     });
-    try {
-      const result = await contract.methods.getWinnerData().call();
-      const winnerAddress = result[0];
-      const luckyNumber = result[1];
-
-      await Swal.fire({
-        title: "Winner found",
-        text: `Winner: ${winnerAddress}. Lucky number: ${luckyNumber}`,
-        icon: "success",
-      });
-    } catch (error) {
-      Swal.fire({
-        title: "Winner not found",
-        text: "No winner now",
-        icon: "error",
-      });
-    }
   };
   // #endregion
 
