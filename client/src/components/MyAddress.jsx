@@ -1,7 +1,7 @@
 export default function MyAddress({ accounts }) {
   return (
-    <div className="shadow-sm card mb-3">
-      <div className="card-header">
+    <div className="card mb-3">
+      <div className="card-header fw-bold">
         <i class="bi bi-person"></i> My address
       </div>
       <div className="card-body">

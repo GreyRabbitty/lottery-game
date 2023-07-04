@@ -148,8 +148,13 @@ export default function App() {
         <div className="p-1">Loading Web3, accounts, and contract...</div>
       ) : (
         <div>
-          <h2 className="shadow-sm mt-2 mb-4 p-4 text-bg-primary text-center rounded">
-            Lottery game 🍀🍀
+          <h2
+            className="shadow-sm mt-2 mb-4 p-4 text-center text-light rounded"
+            style={{
+              background: "linear-gradient(315deg, #2a2a72 0%, #009ffd 74%)",
+            }}
+          >
+            Lucky number 🍀
           </h2>
           <div className="d-flex">
             <div className="me-4" style={{ maxWidth: "400px" }}>
