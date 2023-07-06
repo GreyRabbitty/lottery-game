@@ -11,6 +11,7 @@ contract Lottery {
     }
     Player[] public players;
     uint public luckyNumber;
+    uint public prizeAmount;
 
     event PlayerEntered(Player[] players);
     event WinnerPicked(uint256 luckyNumber, address winner);
@@ -18,6 +19,7 @@ contract Lottery {
 
     constructor() {
         manager = msg.sender;
+        prizeAmount = 1;
     }
 
     function enter(uint number) public payable {

@@ -1,4 +1,4 @@
-export default function Players({ accounts, players }) {
+export default function Players({ accounts, players, prizeAmount }) {
   return (
     <div className="card mb-3">
       <div className="card-header fw-bold">
@@ -15,7 +15,7 @@ export default function Players({ accounts, players }) {
               <td className="text-center">
                 Compete{" "}
                 <span className="fw-bold text-primary">
-                  {1.75 * players.length}
+                  {prizeAmount * players.length}
                 </span>{" "}
                 ETH
               </td>

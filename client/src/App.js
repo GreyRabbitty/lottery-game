@@ -17,6 +17,7 @@ export default function App() {
   const [contract, setContract] = useState(null);
   const [manager, setManager] = useState("");
   const [players, setPlayers] = useState([]);
+  const [prizeAmount, setPrizeAmount] = useState(1);
 
   // Initial necessary variables
   // Handle socket events
@@ -107,8 +108,11 @@ export default function App() {
       try {
         const managerData = await contract.methods.manager().call();
         const playersData = await contract.methods.getPlayers().call();
+        const prizeAmountData = await contract.methods.prizeAmount().call();
+
         setManager(managerData);
         setPlayers(playersData);
+        setPrizeAmount(prizeAmountData);
       } catch {
         Swal.fire({
           title: "Connection error",
@@ -129,7 +133,7 @@ export default function App() {
 
     await contract.methods.enter(number).send({
       from: accounts[0],
-      value: web3.utils.toWei("1.75", "ether"),
+      value: web3.utils.toWei(prizeAmount.toString(), "ether"),
     });
 
     await Swal.fire({
@@ -182,7 +186,11 @@ export default function App() {
 
             <div>
               <MyAddress accounts={accounts} />
-              <Players accounts={accounts} players={players} />
+              <Players
+                accounts={accounts}
+                players={players}
+                prizeAmount={prizeAmount}
+              />
             </div>
           </div>
         </div>
