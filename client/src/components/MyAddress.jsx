@@ -2,7 +2,7 @@ export default function MyAddress({ accounts }) {
   return (
     <div className="card mb-3">
       <div className="card-header fw-bold">
-        <i class="bi bi-person"></i> My address
+        <i className="bi bi-person"></i> My address
       </div>
       <div className="card-body">
         <p className="card-text">{accounts[0]}</p>

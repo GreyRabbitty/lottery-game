@@ -2,7 +2,7 @@ export default function Players({ accounts, players }) {
   return (
     <div className="card mb-3">
       <div className="card-header fw-bold">
-        <i class="bi bi-people"></i> Players
+        <i className="bi bi-people"></i> Players
       </div>
       <div className="card-body">
         <table className="table table-bordered">

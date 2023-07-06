@@ -1,21 +1,25 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import Manager from "./components/Manager";
-import MyAddress from "./components/MyAddress";
-import Players from "./components/Players";
-import Register from "./components/Register";
-import WinnerPicker from "./components/WinnerPicker";
+import {
+  Manager,
+  MyAddress,
+  Players,
+  Register,
+  WinnerPicker,
+} from "./components";
 import Lottery from "./contracts/Lottery.json";
-import getWeb3 from "./utils/getWeb3";
-import getWeb3Socket from "./utils/getWeb3Socket";
+import { getWeb3, getWeb3Socket } from "./utils";
 
 export default function App() {
+  // #region Data
   const [web3, setWeb3] = useState(null);
   const [accounts, setAccounts] = useState(null);
   const [contract, setContract] = useState(null);
   const [manager, setManager] = useState("");
   const [players, setPlayers] = useState([]);
 
+  // Initial necessary variables
+  // Handle socket events
   useEffect(() => {
     (async () => {
       try {
@@ -97,6 +101,7 @@ export default function App() {
     })();
   }, [setPlayers]);
 
+  // Fetch the very first data
   useEffect(() => {
     const fetch = async () => {
       try {
@@ -116,6 +121,7 @@ export default function App() {
       fetch();
     }
   }, [web3, accounts, contract]);
+  // #endregion
 
   // #region Events
   const handleEnter = async (number) => {
@@ -166,7 +172,7 @@ export default function App() {
                 <Register handleEnter={handleEnter} />
               )}
 
-              {accounts[0] === "0xf1B45d65C6a646c9684c578CC2c2C7d751319848" && (
+              {accounts[0] === manager && (
                 <WinnerPicker
                   players={players}
                   handlePickWinner={handlePickWinner}
