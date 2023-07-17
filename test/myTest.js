@@ -8,7 +8,6 @@ contract("Contract name : Lottery", (accounts) => {
   });
 
   it("constructor", async () => {
-    // console.log(instance.address);
     assert.ok(instance.address);
   });
 
@@ -20,8 +19,6 @@ contract("Contract name : Lottery", (accounts) => {
     });
 
     const players = await instance.getPlayers();
-    // console.log(players);
-
     assert.equal(accounts[0], players[0]);
     assert.equal(1, players.length);
   });
@@ -41,8 +38,8 @@ contract("Contract name : Lottery", (accounts) => {
     });
 
     const finalBalance = await web3.eth.getBalance(accounts[0]);
-
     const diff = finalBalance - initialBalance;
+
     assert(diff > web3.utils.toWei("1.8", "ether"));
   });
 
@@ -64,7 +61,6 @@ contract("Contract name : Lottery", (accounts) => {
     });
 
     const players = await instance.getPlayers();
-    // console.log(players);
     assert.equal(accounts[0], players[0]);
     assert.equal(accounts[1], players[1]);
     assert.equal(accounts[2], players[2]);
