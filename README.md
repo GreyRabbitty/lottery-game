@@ -40,7 +40,6 @@ Tạo một trò chơi khuyến mãi dựa vào cơ chế phát sinh ngẫu nhi�
 1. Contract solidity
 
 Mở Ganache và tạo mới một workspace
-
 Ở Truffle Project chọn đến file truffle-config.js của project này
 
 Mở terminal ở thư mục gốc của project, chạy lệnh sau để migrate blockchain
