@@ -29,7 +29,7 @@ Tạo một trò chơi khuyến mãi dựa vào cơ chế phát sinh ngẫu nhi�
 
 ## Tiên quyết
 
-Đảm bảo cài đặt dủ các thành phần sau trước khi chạy:
+Đảm bảo cài đặt đủ các thành phần sau trước khi chạy:
 
 - [Ganache](https://trufflesuite.com/ganache/)
 - [Truffle](https://www.npmjs.com/package/truffle)
@@ -73,16 +73,4 @@ Cấu hình Metamask network:
 - RPC: http://127.0.0.1:7545
 - ChainID: 1337
 
-Vào Gananche copy private key paste vào trong ví Metamask
-
-## Tham khảo
-
-https://reactjsexample.com/react-truffle-box-start-using-smart-contracts-from-a-react-app/
-
-https://medium.com/m/global-identity-2?redirectUrl=https%3A%2F%2Fbetterprogramming.pub%2Fbuild-an-end-to-end-nft-project-using-truffle-suite-d1814ee290f9
-
-https://github.com/zS1L3NT/lotterex
-
-https://github.com/thenua3bhai/decentralized-fullStack-lottery-with-truffle-react-chainlink
-
-https://github.com/sagarparker/LuckyWinner_Ethereum
+Vào Ganache copy private key paste vào trong ví Metamask
